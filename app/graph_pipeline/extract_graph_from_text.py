@@ -116,11 +116,10 @@ def insert_into_oracle(nodes_out: List[Tuple[str, str]], edges_out: List[Tuple[s
 
             # Report any failed rows (e.g., FK violations)
             errs = cur.getbatcherrors()
-            if errs:
-                for e in errs:
-                    bad_row = edges_out[e.offset]     # the input row that failed
-                    skipped.append((bad_row, e.message))
-                    print(f"SKIPPED edge {bad_row} -> {e.message}")
+            for e in errs:
+                bad_row = edges_out[e.offset]     # the input row that failed
+                skipped.append((bad_row, e.message))
+                print(f"SKIPPED edge {bad_row} -> {e.message}")
 
             # Optional: how many actually inserted
             rowcounts = cur.getarraydmlrowcounts()
